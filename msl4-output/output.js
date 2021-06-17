@@ -11,6 +11,7 @@ module.exports = function(RED) {
             console.log(config);
             node.channel = config.channel;
             console.log(node.channel);
+            console.log(RED.nodes.getNode(config.id));
         })
     }
     RED.nodes.registerType('msl4-output', SetOutChannel);
