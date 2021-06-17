@@ -1,0 +1,21 @@
+{
+  "name": "msl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "node-red": {
+    "nodes": {
+      "msl4-input": "msl4-input/input.js",
+      "msl4-output": "msl4-output/output.js"
+    }
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
