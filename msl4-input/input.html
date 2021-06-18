@@ -3,11 +3,8 @@
         category: 'MSL4',
         color: 'lightgreen',
         defaults: {
-            name: {value:""},
-            hostname: {value:""},
-            devices: {value: []},
-            device: {value: {}},
-            subdevice: {value: {}},
+            name: {value: ""},
+            mslChannel: {value:"", type:"msl-input-channel-config"},
             channel: {value: {}}
         },
         inputs:1,
@@ -15,146 +12,21 @@
         icon: "",
         label: function() {
             return this.name||"msl4-input";
-        },
-        oneditprepare: function() {
-            // Set all the variables
-            let node = this;
-            let deviceInputEl = $("#input-device");
-            let subDeviceInputEl = $("#input-subdevice");
-            let channelInputEl = $("#input-channel");
-            
-            // Prepopulate input fields if neccessary
-            if(node.devices.length) {
-                deviceInputEl.empty();
-                node.devices.forEach(device => deviceInputEl.html(deviceInputEl.html() + `<option value="${device.hostname}">${device.hostname}</option>`));
-                deviceInputEl.val(node.device.hostname).change()
-                if(!$.isEmptyObject(node.subdevice)) {
-                    console.log('subdevice: ', node.subdevice);
-                    node.device.devices.forEach(device => subDeviceInputEl.html(subDeviceInputEl.html() + `<option value="${device.devicename}">${device.devicename}</option>`));
-                    subDeviceInputEl.val(node.subdevice.devicename).change();
-                    if(!$.isEmptyObject(node.channel)) {
-                        console.log('channel: ', node.channel);
-                        node.subdevice.channels.forEach(channel => channelInputEl.html(channelInputEl.html() + `<option value="${channel.channelid}">${channel.channelname}</option>`))
-                        channelInputEl.val(node.channel.channelid).change();
-                    }
-                }
-            };
-
-            // Functionality to add a device
-            $(".new-device-btn").on("click", onNewDevice);
-            $("#input-new-device").on('keypress', function(e) {
-                if(e.which === 13) {
-                    onNewDevice(e.target);
-                }
-            })
-            function onNewDevice (element) {
-                let hostname = $("#input-new-device").val();
-                if(node.devices && node.devices.find(device => device.hostname === hostname)) return;
-                $.get(`http://${hostname}/devicetree/`, function (data) {
-                    let device = {
-                        hostname: hostname,
-                        devices: data.items
-                    }
-                    console.log("received new device: ", device);
-                    deviceInputEl.trigger("new-device", device);
-                    if(node.devices) {
-                        node.devices.push(device);
-                    } else {
-                        node.devices = [];
-                        node.devices.push(device);
-                    }
-                    console.log(node.devices);                       
-                }).fail(function() {
-                    alert("Gerät konnte nicht gefunden werden.");
-                });
-            }
-
-            // Functionality after a device has been added
-            deviceInputEl.on("new-device", function (event, device) {
-                this.innerHTML += `<option value="${device.hostname}">${device.hostname}</option>`;
-            })
-
-            deviceInputEl.on("change", function(event) {
-                let deviceHostname = deviceInputEl.val();
-                if(deviceHostname) {
-                    subDeviceInputEl.html("");
-                    let device = node.devices.find(device => device.hostname === deviceHostname);
-                    console.log("selected device: ", device);
-                    node.device = device;
-                    device.devices.forEach(device => {
-                        subDeviceInputEl.html(subDeviceInputEl.html() + `<option value="${device.devicename}">${device.devicename}</option>`);
-                    })
-                    subDeviceInputEl.change();
-                }
-            })
-
-            // Functionality after a subdevice has been choosen
-            subDeviceInputEl.on("change", function(event) {
-                let subdevice = node.device.devices.find(subdevice => subdevice.devicename === subDeviceInputEl.val());
-                // Filter only input channels
-                let inputChannelIDs = [1, 2, 4, 6, 10, 20, 51];
-                subdevice.channels = subdevice.channels.filter(channel => inputChannelIDs.includes(channel.channeltype));
-                node.subdevice = subdevice;
-                console.log("subdevice: ", subdevice);
-                subdevice.channels.length ? channelInputEl.html(`<option value="" selected disabled hidden>Kanal auswählen</option>`) : channelInputEl.html("");
-                subdevice.channels.forEach(channel => channelInputEl.html(channelInputEl.html() + `<option value="${channel.channelid}">${channel.channelname}</option>`));
-            })
-
-            // Functionality for when a channel has been selected
-            channelInputEl.on("change", function (event) {
-                console.log(channelInputEl.val());
-                let channel = node.subdevice.channels.find(channel => channel.channelid === parseInt(channelInputEl.val()));
-                console.log("channel", channel);
-                node.channel = channel;
-            })
         }
     });
 </script>
 
 <script type="text/html" data-template-name="msl4-input">
-    <style>
-        .device-input-container {
-            display: inline;
-        }
-        .icon {
-            position: absolute;
-            right: 65px;
-            margin-top: 3px;
-            font-size: 30px;
-            cursor: pointer;
-        }
-    </style>
     <div class="form-row">
-        <label for="input-name"><i class="icon-tag"></i>Name</label>
-        <input type="text" id="input-name" placeholder="Get Device Data">
+        <label for="node-input-name"><i class="fa fa-tag"></i>Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="new-device">Neues Gerät</label>
-        <div class="device-input-container">
-            <i class="fa fa-plus icon new-device-btn"></i>
-            <input type="text" id="input-new-device" placeholder="Hostname/IP">
-        </div>
-    </div>
-    <div class="form-row">
-        <label for="device">Gerät</label>
-        <select id="input-device">
-            <option value="" selected disabled hidden>Gerät auswählen</option>
-        </select>
-    </div>
-    <div class="form-row">
-        <label for="sub-device">Verb. Gerät</label>
-        <select id="input-subdevice">
-            <option value="" selected disabled hidden>Gerät auswählen</option>
-        </select>
-    </div>
-    <div class="form-row">
-        <label for="channel">Kanal</label>
-        <select id="input-channel">
-            <option value="" selected disabled hidden>Kanal auswählen</option>
-        </select>
+        <label for="node-input-mslChannel"><i class="fa fa-tag"></i> MSL</label>
+        <input type="text" id="node-input-mslChannel">
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="msl4-output">
+<script type="text/x-red" data-help-name="msl4-input">
     <p>Set MSL4 Input Channel</p>
 </script>
