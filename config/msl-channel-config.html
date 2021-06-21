@@ -1,0 +1,107 @@
+<script type="text/javascript">
+    RED.nodes.registerType('msl-channel-config',{
+        category: 'config',
+        defaults: {
+            device: {value: "", type:"msl-device-config"},
+            name: {value:""},
+            channelType: {value: "null"},
+            selectedDevice: {value: ""},
+            subdevice: {value: ""},
+            channel: {value: ""}
+        },
+        label: function() {
+            if(this.name) return this.name;
+            else if (this.channel) return this.channel.channelname;
+            else return 'MSL Kanal';
+        },
+        oneditprepare: function() {
+            let node = this;
+            let typeEl = $("#input-channelType");
+            let subdeviceEl = $("#input-subdevice");
+            let channelEl = $("#input-channel");
+
+            console.log(node.selectedDevice, node.subdevice, node.channel);
+
+            // Prepopulate input fields if neccessary
+
+            node.channelType = typeEl.val();
+
+            if(node.selectedDevice) {
+                node.selectedDevice.devices.forEach(subdevice => subdeviceEl.html(subdeviceEl.html() + `<option value="${subdevice.devicename}">${subdevice.devicename}</option>`));
+                if(node.subdevice) {
+                    subdeviceEl.val(node.subdevice.devicename).change();
+                    node.subdevice.channels.forEach(channel => channelEl.html(channelEl.html() + `<option value="${channel.channelname}">${channel.channelname}</option>`))
+                    if(node.channel) {
+                        channelEl.val(node.channel.channelname).change();
+                    }
+                }
+            }
+
+            $("#node-config-input-device").on("change", function() {
+                let config = RED.nodes.node($(this).val());
+                console.log('config: ', config, 'node: ', node);
+                if(config && config.device && config.device !== node.selectedDevice) {
+                    node.selectedDevice = config.device;
+                    subdeviceEl.html("");
+                    node.selectedDevice.devices.forEach(subdevice => subdeviceEl.html(subdeviceEl.html() + `<option value="${subdevice.devicename}">${subdevice.devicename}</option>`));
+                    subdeviceEl.change();
+                }
+            });
+
+            typeEl.on("change", function() {
+                node.channelType = typeEl.val();
+                subdeviceEl.val(subdeviceEl.val()).change();
+            });
+
+            subdeviceEl.on("change", function() {
+                node.subdevice = node.selectedDevice.devices.find(subdevice => subdevice.devicename === $(this).val());
+                channelEl.html("");
+                console.log(node.channelType);
+                let channeltypes;
+                if(node.channelType === "null")
+                    channeltypes = [1,2,3,4,5,6,7,8,9,7777,10,20,21,30,40,41,50,51];
+                else if (node.channelType === "input")
+                    channeltypes = [1,2,4,6,10,20,51];
+                else if (node.channelType === "output")
+                    channeltypes = [3,5,7,9,21,51];
+                let channels = node.subdevice.channels.filter(channel => channeltypes.includes(parseInt(channel.channeltype)));
+                channels.forEach(channel => channelEl.html(channelEl.html() + `<option value="${channel.channelname}">${channel.channelname}</option>`));
+            })
+
+            channelEl.on("change", function() {
+                node.channel = node.subdevice.channels.find(channel => channel.channelname === $(this).val());
+            })
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="msl-channel-config">
+    <div class="form-row">
+        <label for="node-config-input-device">Gerät</label>
+        <input type="text" id="node-config-input-device" placeholder="Gerät">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-name">Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="input-channelType">Kanaltyp</label>
+        <select id="input-channelType">
+            <option value="input">Eingang</option>
+            <option value="output">Ausgang</option>
+            <option value="null" selected>Alle</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="sub-device">Verb. Gerät</label>
+        <select id="input-subdevice">
+            <option value="" selected disabled hidden>Gerät auswählen</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="channel">Kanal</label>
+        <select id="input-channel">
+            <option value="" selected disabled hidden>Kanal auswählen</option>
+        </select>
+    </div>
+</script>

@@ -1,0 +1,34 @@
+<script type="text/javascript">
+    RED.nodes.registerType('msl4-channel',{
+        category: 'MSL4',
+        color: 'lightgreen',
+        defaults: {
+            name: {value: "MSL-Kanal"},
+            mslChannel: {value:"", type:"msl-channel-config"},
+            channel: {value: ""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "fw-logo.png",
+        label: function() {
+            if(this.name) return this.name;
+            else if (this.channel) return this.channel.channelname;
+            else return "MSL-Kanal"
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="msl4-channel">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-mslChannel"><i class="fa fa-tag"></i> MSL-Kanal</label>
+        <input type="text" id="node-input-mslChannel">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="msl4-channel">
+    <p>Set MSL4 Channel</p>
+</script>

@@ -7,17 +7,20 @@ module.exports = function(RED) {
         this.channel = RED.nodes.getNode(config.mslChannel).channel;
         var node = this;
         node.on('input', async (msg) => {
-            let hostname = RED.nodes.getNode(config.mslChannel).hostname
+            console.log(config);
+            console.log('device-config: ', RED.nodes.getNode(RED.nodes.getNode(config.mslChannel).device).hostname);
+            console.log('channel-config: ', RED.nodes.getNode(config.mslChannel));
+            let hostname = RED.nodes.getNode(RED.nodes.getNode(config.mslChannel).device).hostname
             try {
                 const sourceobject = await (await axios.get(`http://${hostname}/sourceobjects/`)).data.items.find(sourceobject => sourceobject[Object.keys(sourceobject)[0]].channelid === node.channel.channelid);
-                console.log(node.channel);
-                console.log(sourceobject);
                 msg.payload = sourceobject[Object.keys(sourceobject)[0]];
                 node.send(msg);
             } catch (err) {
                 console.error(err);
+                msg.payload = err;
+                node.send(msg);
             }
         })
     }
-    RED.nodes.registerType('msl4-input', SetInChannel);
+    RED.nodes.registerType('msl4-channel', SetInChannel);
 }

@@ -1,11 +1,11 @@
 <script type="text/javascript">
-    RED.nodes.registerType('msl4-output',{
+    RED.nodes.registerType('msl4-out',{
         category: 'MSL4',
         color: 'lightgreen',
         defaults: {
             name: {value: ""},
-            mslChannel: {value:"", type:"msl-output-channel-config"},
-            channel: {value: {}}
+            mslChannel: {value:"", type:"msl-channel-config"},
+            channel: {value: ""}
         },
         inputs:1,
         outputs:1,
@@ -16,7 +16,7 @@
     });
 </script>
 
-<script type="text/html" data-template-name="msl4-output">
+<script type="text/html" data-template-name="msl4-out">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i>Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -27,6 +27,6 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="msl4-output">
+<script type="text/x-red" data-help-name="msl4-out">
     <p>Set MSL4 Output Channel</p>
 </script>

@@ -1,0 +1,108 @@
+<script type="text/javascript">
+    RED.nodes.registerType('msl-device-config',{
+        category: 'config',
+        defaults: {
+            hostname: {value:`${window.location.hostname}`},
+            device: {value: ""},
+            devicename: {value: ""},
+            devices: {value:""},
+
+        },
+        label: function() {
+            return this.hostname;
+        },
+        oneditprepare: function() {
+            let node = this;
+            let deviceOverviewEl = $("#device-overview")
+
+            // Functionality to add a device
+            $(".new-device-btn").on("click", onNewDevice);
+            $("#node-config-input-hostname").on('keypress', function(e) {
+                if(e.which === 13) {
+                    onNewDevice(e.target);
+                }
+            })
+
+            function onNewDevice (element) {
+                let hostname = $("#node-config-input-hostname").val();
+                node.hostname = hostname;
+                $.get(`http://${hostname}/devicetree/`, function (data) {
+                    node.devices = data.items;
+                    let device = {
+                        hostname: hostname,
+                        devices: data.items
+                    }
+                    console.log("received new device: ", device);
+                    addDeviceOverview(device);
+                    node.device = device;                      
+                }).done(function() {
+                    alert("Gerät wurde hinzugefügt.");
+                }).fail(function() {
+                    alert("Gerät konnte nicht gefunden werden.");
+                });
+            }
+
+            function addDeviceOverview (device) {
+                let deviceOverviewEl = $("#device-overview-container");
+                device.devices.forEach(device => {
+                    let deviceOverviewEl = document.createElement("div");
+                    deviceOverviewEl.classList.add("device-overview");
+
+                    let nameContainerDiv = document.createElement("div");
+                    nameContainerDiv.classList.add("form-row");
+                    let nameLabel = document.createElement("label");
+                    nameLabel.innerHTML = "Gerätename";
+                    nameContainerDiv.appendChild(nameLabel);
+                    let devicenameEl = document.createElement("span");
+                    devicenameEl.innerHTML = `<strong>${device.devicename}</strong>`;
+                    nameContainerDiv.appendChild(devicenameEl);
+
+                    deviceOverviewEl.appendChild(nameContainerDiv);
+
+                    let channelContainerDiv = document.createElement("div");
+                    channelContainerDiv.classList.add("form-row");
+                    let channelLabel = document.createElement("label");
+                    channelLabel.innerHTML = "Kanäle";
+                    channelContainerDiv.appendChild(channelLabel);
+                    let channelCountEl = document.createElement("span");
+                    channelCountEl.innerHTML = device.channels.length;
+                    channelContainerDiv.appendChild(channelCountEl);
+
+                    deviceOverviewEl.appendChild(channelContainerDiv);
+                    $("#device-overview-container").append(deviceOverviewEl);
+                })
+            }
+        },
+        oneditsave: function() {
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="msl-device-config">
+    <style>
+        .device-input-container {
+            display: inline;
+        }
+        .icon {
+            position: absolute;
+            right: 65px;
+            margin-top: 3px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .device-overview {
+            border-top: 1px solid black;
+            padding-top: 10px;
+        }
+    </style>
+    <div class="form-row">
+        <label for="new-device">Neues Gerät</label>
+        <div class="device-input-container">
+            <i class="fa fa-plus icon new-device-btn"></i>
+            <input type="text" id="node-config-input-hostname" placeholder="Hostname/IP">
+        </div>
+    </div>
+    <div id="device-overview-container">
+        <h4 style="text-align: center;">Geräteübersicht</h4>
+    </div>
+</script>
