@@ -15,6 +15,11 @@
             let node = this;
             let deviceOverviewEl = $("#device-overview")
 
+            // Prepopulate config if neccessary
+            if(node.device) {
+                addDeviceOverview(node.device);
+            }
+
             // Functionality to add a device
             $(".new-device-btn").on("click", onNewDevice);
             $("#node-config-input-hostname").on('keypress', function(e) {
