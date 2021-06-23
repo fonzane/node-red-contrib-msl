@@ -7,9 +7,6 @@ module.exports = function(RED) {
         this.channel = RED.nodes.getNode(config.mslChannel).channel;
         var node = this;
         node.on('input', async (msg) => {
-            console.log(config);
-            console.log('device-config: ', RED.nodes.getNode(RED.nodes.getNode(config.mslChannel).device).hostname);
-            console.log('channel-config: ', RED.nodes.getNode(config.mslChannel));
             let hostname = RED.nodes.getNode(RED.nodes.getNode(config.mslChannel).device).hostname
             try {
                 const sourceobject = await (await axios.get(`http://${hostname}/sourceobjects/`)).data.items.find(sourceobject => sourceobject[Object.keys(sourceobject)[0]].channelid === node.channel.channelid);
