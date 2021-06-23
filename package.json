@@ -13,7 +13,8 @@
     "nodes": {
       "msl-device-config": "config/msl-device-config.js",
       "msl-channel-config": "config/msl-channel-config.js",
-      "msl4-channel": "msl4-channel/msl4-channel.js"
+      "msl4-in": "msl4-channel/msl4-in.js",
+      "msl4-out": "msl4-channel/msl4-out.js"
     }
   },
   "dependencies": {

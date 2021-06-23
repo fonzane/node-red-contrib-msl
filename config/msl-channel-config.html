@@ -105,3 +105,16 @@
         </select>
     </div>
 </script>
+
+<script type="text/x-red" data-help-name="msl-channel-config">
+    <h3>MSL4 Kanal-Konfigurationsnode</h3>
+    <p>Konfigurationsnode zur Zuordnung eines MSL4-Kanals</p>
+    <p>
+        Dieses Konfigurationsnode dient der Zuordnung eines bestimmten Kanals des MSL4. Damit ein Kanal ausgesucht werden kann, muss zunächst über das Auswahlfeld "Gerät" ein
+        Geräte-Konfigurationsnode hinzugefügt werden. Dies dient der Möglichkeit auch über ein bestimmtes Node hinweg eine persistente Gerätezuordnung vornehmen zu können.
+        Sobald ein Gerät zugeordnet wurde, kann über das "Name"-Eingabgefeld ein beliebiger Name für dieses Konfigurationsnode festgelegt werden. Wird dieses Feld freigelassen, übernimmt
+        dieses Node als Namen den Namen des zugeordneten Kanals. Über das "Kanaltyp"-Auswahlfeld kann ein Kanaltyp (Eingang, Ausgang oder beides) festgelegt werden. Dies dient der Filterung der möglichen
+        zuordnenbaren Kanäle. Über das "Verb. Gerät"-Auswahlfeld kann entweder das MSL-Gerät selber oder ein an dieses MSL angeschlossenes Gerät ausgewählt werden. Zuletzt lässt sich über des "Kanal"-Auswahlfeld
+        ein bestimmter Kanal zuordnen.
+    </p>
+</script>

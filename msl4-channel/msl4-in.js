@@ -19,5 +19,5 @@ module.exports = function(RED) {
             }
         })
     }
-    RED.nodes.registerType('msl4-channel', SetInChannel);
+    RED.nodes.registerType('msl4-in', SetInChannel);
 }

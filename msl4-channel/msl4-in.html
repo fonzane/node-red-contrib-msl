@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    RED.nodes.registerType('msl4-in',{
+        category: 'MSL4',
+        color: 'lightgreen',
+        defaults: {
+            name: {value: "MSL4-In"},
+            mslChannel: {value:"", type:"msl-channel-config"},
+            channel: {value: ""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "fw-logo.png",
+        label: function() {
+            if(this.name) return this.name;
+            else if (this.channel) return this.channel.channelname;
+            else return "MSL4-In"
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="msl4-in">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-mslChannel"><i class="fa fa-tag"></i> MSL-Kanal</label>
+        <input type="text" id="node-input-mslChannel">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="msl4-in">
+    <h3>MSL4 In</h3>
+    <p>Node zur Lesung des Wertes eines Eingangskanal vom MSL4.</p>
+    <p>Damit diesem Node ein Kanal zugeordnet werden kann, muss über das "MSL-Kanal-Auswahlfeld" ein neues MSL-Kanal-Konfigurationsnode erstellt werden.
+       Über dieses Konfigurationsnode erfolgt die Zuordnung eines bestimmten Gerätes sowie eines bestimmten Kanal dieses Geräts.
+       Ist die Zuordnung erfolgt, dann wird dieses Node, sobald es ein beliebiges Eingangssignal erhält, die Daten des zugeordneten MSL-Kanals an ein nachgeschaltetes Node senden.
+       Diese Ausgabe enthält folgende Felder: <quote>msg, unit, min, max, limesmin, limesmax, devicename, alerttime, channelname, value, channelid, status</quote></p>
+</script>

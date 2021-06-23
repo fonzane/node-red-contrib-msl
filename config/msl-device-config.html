@@ -49,6 +49,7 @@
 
             function addDeviceOverview (device) {
                 let deviceOverviewEl = $("#device-overview-container");
+                deviceOverviewEl.html("");
                 device.devices.forEach(device => {
                     let deviceOverviewEl = document.createElement("div");
                     deviceOverviewEl.classList.add("device-overview");
@@ -96,7 +97,7 @@
             cursor: pointer;
         }
         .device-overview {
-            border-top: 1px solid black;
+            border-bottom: 1px solid black;
             padding-top: 10px;
         }
     </style>
@@ -110,4 +111,20 @@
     <div id="device-overview-container">
         <h4 style="text-align: center;">Geräteübersicht</h4>
     </div>
+</script>
+
+
+<script type="text/x-red" data-help-name="msl-device-config">
+    <h3>MSL4 Gerät-Konfigurationsnode</h3>
+    <p>Konfigurationsnode zur Zuordnung eines MSL4-Gerätes</p>
+    <p>
+        Dieses Konfigurationsnode dient der Hertellung einer Verbindung zu einem MSL4-Gerät und dessen Zuordnung zu einem Kanal-Konfigurationsnode. In das "Neues Gerät"-Eingabefeld ist der Hostname oder die IP-Adresse des jeweiligen
+        Gerätes einzugeben. Bitte beachten Sie, dass die Anfrage von dem Browser des Gerätes ausgeht, mit dem Sie diese Instanz aufrufen. Die Eingabe einer lokalen IP-Adresse oder eines Hostnamens, die sich nicht innerhalb des Netzwerks
+        befinden, von dem aus Sie diese Instanz aufrufen, wird ins leere laufen. Bitte geben Sie nur die Stamm-URL oder IP-Adresse ein. <b>Läuft diese Instanz unter http://msl4fw0123:1880/, dann geben Sie bitte nur msl4fw0123 ein</b>. Um
+        im Vorfeld die Verbindung zu überprüfen, können Sie in die Adressleiste Ihres Browsers die Stamm-URL des Gerätes + '/devicetree/' (z.B. msl4fw0123/devicetree/) eingeben. Wenn sie eine lange Liste mit Daten zurückgegeben bekommen,
+        dann war die Verbindung erfolgreich und wird auch hier funktionieren. Falls nicht ist entweder das Gerät über diese IP/Hostnamen von Ihrem gegenwärtigen Standpunkt aus nicht erreichbar oder die IP/Hostname ist fehlerhaft.
+    </p>
+    <p>
+        Unterhalb des "Neues Gerät"-Eingabefeld finden Sie nach erfolgreicher Herstellung einer Verbindung eine Übersicht über die mit dem zugeordneten Gerät verbundenen Geräte und der Anzahl deren Kanäle.
+    </p>
 </script>
