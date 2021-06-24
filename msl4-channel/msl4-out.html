@@ -3,16 +3,16 @@
         category: 'MSL4',
         color: 'lightgreen',
         defaults: {
-            name: {value: "MSL4-Out"},
+            name: {value: ""},
             mslChannel: {value:"", type:"msl-channel-config"},
-            channel: {value: ""}
+            channels: {value: ""}
         },
         inputs:1,
         outputs:1,
         icon: "fw-logo.png",
         label: function() {
             if(this.name) return this.name;
-            else if (this.channel) return this.channel.channelname;
+            else if (this.channel) return this.channels.flatMap(channel => channel.channelname).join();
             else return "MSL4-Out"
         }
     });
@@ -31,8 +31,11 @@
 
 <script type="text/x-red" data-help-name="msl4-out">
     <h3>MSL4 Out</h3>
-    <p>Node zur Setzung eines Wertes eines Ausgangskanal vom MSL4.</p>
-    <p>Damit diesem Node ein Kanal zugeordnet werden kann, muss über das "MSL-Kanal-Auswahlfeld" ein neues MSL-Kanal-Konfigurationsnode erstellt werden.
-       Über dieses Konfigurationsnode erfolgt die Zuordnung eines bestimmten Gerätes sowie eines bestimmten Kanal dieses Geräts.
-       Sobald diese Zuordnung erfolgt ist, wird dieses Node dem ihm zugeordneten Ausgangskanal den Wert zuweisen, den es mit einem Eingangssignal erhält.</p>
+    <p>Node zur Setzung von Werten der MSL4 Ausgangskanäle</p>
+    <p>
+        Damit diesem Node Kanäle zugeordnet werden können, muss über das "MSL-Kanal"-Auswahlfeld ein neues MSL-Kanal-Konfigurationsnode erstellt werden.
+        Über dieses Konfigurationsnode erfolgt die Zuordnung eines bestimmten Gerätes sowie von Kanälen dieses Gerätes.
+        Damit dieses Node die Werte der zugeordneten Kanäle setzen kann, muss ihm ein Array mit numerischen Werten übergeben dessen Größe der Anzahl von zugeordneten Kanälen entsprechen muss.
+        Beispiel: [1] => [Digital Out 1]; [0, 1] => [Digital Out 1, Digital Out 2]; [0, 1, 0] => [Digital Out 1, Digital Out 2, Digital Out 3] usw.
+    </p>
 </script>
