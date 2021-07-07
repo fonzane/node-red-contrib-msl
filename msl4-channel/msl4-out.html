@@ -33,9 +33,10 @@
     <h3>MSL4 Out</h3>
     <p>Node zur Setzung von Werten der MSL4 Ausgangskanäle</p>
     <p>
-        Damit diesem Node Kanäle zugeordnet werden können, muss über das "MSL-Kanal"-Auswahlfeld ein neues MSL-Kanal-Konfigurationsnode erstellt werden.
-        Über dieses Konfigurationsnode erfolgt die Zuordnung eines bestimmten Gerätes sowie von Kanälen dieses Gerätes.
+        Um diesem Node ein Kanal des MSL zuzuordnen, erstellen Sie über das MSL-Kanal Auswahlfeld ein Kanalkonfigurationsnode und wählen bei dessen Konfiguration einen Kanal aus.
+        <b>Für jede weitere Kanalzuordnung muss ein neues Konfigurationsnode üder die Option `Neuen Typ msl-channel-config hinzufügen` erstellt werden.</b> Diese Konfigurationsnodes sind global
+        und für alle anderen Nodes verfügbar.
         Damit dieses Node die Werte der zugeordneten Kanäle setzen kann, muss ihm ein Array mit numerischen Werten übergeben dessen Größe der Anzahl von zugeordneten Kanälen entsprechen muss.
-        Beispiel: [1] => [Digital Out 1]; [0, 1] => [Digital Out 1, Digital Out 2]; [0, 1, 0] => [Digital Out 1, Digital Out 2, Digital Out 3] usw.
+        Beispiel: <br>[1] => [Digital Out 1]<br> [0, 1] => [Digital Out 1, Digital Out 2]<br> [0, 1, 0] => [Digital Out 1, Digital Out 2, Digital Out 3] usw.
     </p>
 </script>

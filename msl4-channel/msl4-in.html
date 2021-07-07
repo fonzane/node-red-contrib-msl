@@ -32,8 +32,9 @@
 <script type="text/x-red" data-help-name="msl4-in">
     <h3>MSL4 In</h3>
     <p>Node zur Lesung des Wertes eines Eingangskanal vom MSL4.</p>
-    <p>Damit diesem Node ein Kanal zugeordnet werden kann, muss über das "MSL-Kanal-Auswahlfeld" ein neues MSL-Kanal-Konfigurationsnode erstellt werden.
-       Über dieses Konfigurationsnode erfolgt die Zuordnung eines bestimmten Gerätes sowie eines bestimmten Kanal dieses Geräts.
-       Ist die Zuordnung erfolgt, dann wird dieses Node, sobald es ein beliebiges Eingangssignal erhält, die Daten des zugeordneten MSL-Kanals an ein nachgeschaltetes Node senden.
-       Diese Ausgabe enthält folgende Felder: <quote>msg, unit, min, max, limesmin, limesmax, devicename, alerttime, channelname, value, channelid, status</quote></p>
+    <p>Um diesem Node ein Kanal des MSL zuzuordnen, erstellen Sie über das MSL-Kanal Auswahlfeld ein Kanalkonfigurationsnode und wählen bei dessen Konfiguration einen Kanal aus.
+       <b>Für jede weitere Kanalzuordnung muss ein neues Konfigurationsnode üder die Option `Neuen Typ msl-channel-config hinzufügen` erstellt werden.</b> Diese Konfigurationsnodes sind global
+       und für alle anderen Nodes verfügbar.
+       Sobald dieses Node beliebiges Eingangssignal erhält, sendet es die Daten des zugeordneten Kanals.
+       Die Ausgabe enthält folgende Felder: <u>msg, unit, min, max, limesmin, limesmax, devicename, alerttime, channelname, value, channelid, status</u></p>
 </script>
