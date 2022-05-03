@@ -8,13 +8,13 @@ module.exports = function(RED) {
         var node = this;
         node.on('input', async (msg) => {
             let channels = RED.nodes.getNode(config.mslChannel).channels;
-            let channelids = channels.flatMap(channel => channel.channelid);
+            let channelids = channels.flatMap(channel => channel.uniqueid);
             console.log(channelids);
             let hostname = RED.nodes.getNode(RED.nodes.getNode(config.mslChannel).device).hostname
             try {
-                const sourceobjects = await (await axios.get(`http://${hostname}/sourceobjects/`)).data.items.filter(sourceobject => channelids.includes(sourceobject[Object.keys(sourceobject)[0]].channelid));
-                console.log(sourceobjects.flatMap(sourceobject => sourceobject[Object.keys(sourceobject)[0]]));
-                msg.payload = sourceobjects.length > 1 ? sourceobjects.flatMap(sourceobject => sourceobject[Object.keys(sourceobject)[0]]) : sourceobjects[0][Object.keys(sourceobjects[0])[0]];
+                const sourceobjects = await (await axios.get(`http://${hostname}/sourceobjects/`)).data.items.filter(sourceobject => channelids.some(cid => cid === sourceobject.uniqueid));
+                console.log(sourceobjects);
+                msg.payload = sourceobjects.length > 1 ? sourceobjects : sourceobjects[0];
                 node.send(msg);
             } catch (err) {
                 console.error(err);
