@@ -62,9 +62,9 @@
                 console.log(node.channelType);
                 let channeltypes;
                 if(node.channelType === "null")
-                    channeltypes = [1,2,3,4,5,6,7,8,9,7777,10,20,21,30,40,41,50,51];
+                    channeltypes = [1,2,3,4,5,6,7,8,9,7777,10,20,21,30,40,41,50,51,9998,9999];
                 else if (node.channelType === "input")
-                    channeltypes = [1,2,4,6,10,20,51];
+                    channeltypes = [1,2,4,6,10,20,51,9998,9999];
                 else if (node.channelType === "output")
                     channeltypes = [3,5,7,9,21,51];
                 let channels = node.subdevice.channels.filter(channel => channeltypes.includes(parseInt(channel.channeltype)));
