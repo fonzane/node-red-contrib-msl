@@ -23,7 +23,7 @@
                 node.channels = [];
             }
 
-            console.log(node.selectedDevice, node.subdevice, node.channels);
+            // console.log(node.selectedDevice, node.subdevice, node.channels);
 
             // Prepopulate input fields if neccessary
 
@@ -42,7 +42,7 @@
 
             $("#node-config-input-device").on("change", function() {
                 let config = RED.nodes.node($(this).val());
-                console.log('config: ', config, 'node: ', node);
+                // console.log('config: ', config, 'node: ', node);
                 if(config && config.device && config.device !== node.selectedDevice) {
                     node.selectedDevice = config.device;
                     subdeviceEl.html("");
@@ -59,7 +59,7 @@
             subdeviceEl.on("change", function() {
                 node.subdevice = node.selectedDevice.devices.find(subdevice => subdevice.devicename === $(this).val());
                 channelEl.html("");
-                console.log(node.channelType);
+                // console.log(node.channelType);
                 let channeltypes;
                 if(node.channelType === "null")
                     channeltypes = [1,2,3,4,5,6,7,8,9,7777,10,20,21,30,40,41,50,51,9998,9999];
@@ -72,8 +72,8 @@
             })
 
             channelEl.on("change", function() {
-                console.log($(this).val());
-                console.log("setting channels: ", node.subdevice.channels.filter(channel => $(this).val().includes(channel.channelname)));
+                // console.log($(this).val());
+                // console.log("setting channels: ", node.subdevice.channels.filter(channel => $(this).val().includes(channel.channelname)));
                 node.channels = node.subdevice.channels.filter(channel => $(this).val().includes(channel.channelname));
             })
         }

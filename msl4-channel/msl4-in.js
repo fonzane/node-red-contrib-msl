@@ -13,7 +13,7 @@ module.exports = function(RED) {
             let hostname = RED.nodes.getNode(RED.nodes.getNode(config.mslChannel).device).hostname
             try {
                 const sourceobjects = await (await axios.get(`http://${hostname}/sourceobjects/`)).data.items.filter(sourceobject => channelids.some(cid => cid === sourceobject.uniqueid));
-                console.log(sourceobjects);
+                // console.log(sourceobjects);
                 msg.payload = sourceobjects.length > 1 ? sourceobjects : sourceobjects[0];
                 node.send(msg);
             } catch (err) {
